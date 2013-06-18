@@ -8,7 +8,6 @@ abstract class ListFormElement extends FormElement
 {
 	protected $records;
 	protected $display;
-	protected $value;
 
 	/**
 	 * SELECT list erstellen
@@ -18,7 +17,7 @@ abstract class ListFormElement extends FormElement
 	 */
 	public function __construct( $name, $record_class, $display, $value=null )
 	{
-		parent::__construct( $name );
+		parent::__construct( $name, $value );
 
 		$records = $record_class::findAll( null, array( $display ) );
 		if( !is_array($records) )
@@ -28,7 +27,7 @@ abstract class ListFormElement extends FormElement
 
 		$this->records = $records;
 		$this->display = $display;
-		$this->value = EditForm::getParam( $name, $value );
+		$this->value = EditForm::getParam( $this->name, $this->value );
 	}
 	/**
 	 * HTML <select> list der Tabelle erstellen

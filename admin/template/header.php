@@ -17,9 +17,10 @@ if( !$login->isLoggedIn() ) {
 <html xmlns="http://www.w3.org/1999/xhtml" lang="de">
 <head>
 	<title><?php echo $title?></title>
-	<meta charset='UTF-8'>
-	<link rel="stylesheet" href="template/admin.css" media="all">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="template/layout.css" media="all" />
 </head>
 <body>
-<div style="width: 1024px; margin: 10px auto 0px auto;">
+<div style="width: 960; margin: 10px auto 0px auto;">
+<div id='header'><h1><?php echo $title?></h1></div>
 

@@ -4,13 +4,15 @@ $title = 'Admin';
 require_once '../inc/global.inc.php';
 require_once 'template/header.php';
 ?>
-	<div id='header'>
-		<h1><?php echo $title?></h1>
-	</div>
 
-	<form name='Kategorie' action='' method='GET'>
 <?php
+/**
+ * Form description
+ * Setup for the \view\EditForm object
+ */
 $FormOptions = array(
+	'FormName' => 'Kategorie',
+	'FormType' => 'get',
 	'ParamIDName'=> 'KategorieID',
 	'RecordClassName'=> '\db\Kategorie',
 	'Fields'=> array(
@@ -39,6 +41,11 @@ $FormOptions = array(
 	)
 );
 
+/**
+ * Create the form object based on the options
+ * this will also attempt to interpret $_REQUEST values. 
+ * Errors during this process are stored in the message property
+ */
 $form = new \view\EditForm( $FormOptions );
 // show positive messages
 if( $form->messages ) {
@@ -47,29 +54,37 @@ if( $form->messages ) {
 	}
 }
 
+
+/**
+ * HTML Formular erstellen an hand der FormOptions
+ * evt. $_REQUEST Werte werden interpretiert
+ */
 echo $form->getHtml( );
+/**
+ * Hat der Datensatzt schon eine ID
+ * dann kann man diese löschen
+ */
+if( !is_null($form->getID()) ) {
+	echo $form->getDeleteForm( );
+}
+
+/**
+ * Liste von Kategorien
+ */
+$katListe = new \view\SelectFormElement( 'KategorieID', '\db\Kategorie', 'Beschreibung' );
+
 ?>
-		<input type='submit' value='<?php echo $form->getID( )==0 ? 'Erstellen' : 'Ändern'; ?>' />
-	</form>
-<?php if( !is_null($form->getID()) ) : ?>
 
-	<form name='entfernen' action='' method='GET'>
-		<?php echo $form->getDeleteForm( ); ?>
-		<input type='submit' value='Entfernen' />
-	</form>
-<?php endif; ?>
-	
-	<form name='Liste' action='' method='GET'>
-<?php
-
-$view = new \view\SelectFormElement( 'KategorieID', '\db\Kategorie', 'Beschreibung' );
-echo $view->getHtml( );
-?>
-		<input type='submit' value='Auswählen' />
-		<input type='hidden' name='__action' value='select' />
+	<form id='Kategorie_select' action='' method='get'>
+		<dl>
+			<dt><label>Kategorie<?php echo $katListe->getHtml( );?></label></dt>
+		</dl>
+		<div>
+			<input type='hidden' name='__action' value='select' />
+			<input type='submit' value='Auswählen' />
+		</div>
 	</form>
 
-	<p></p><a href='<?php echo $_SERVER['SCRIPT_NAME']; ?>'>Neu</a></p>
 	<p><a href='../login/?logout'>Abmelden</a></p>
 
 <?php

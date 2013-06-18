@@ -18,6 +18,7 @@ echo $view->getHtml( );
 		<input type='hidden' name='action' value='select' />
 	</form>
 
+	<a href='/login/'>Anmelden</a>
 <?php
 require_once 'template/footer.php';
 

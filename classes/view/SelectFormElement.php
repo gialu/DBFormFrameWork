@@ -5,6 +5,10 @@ class SelectFormElement extends ListFormElement
 {
 	/**
 	 * HTML <select> list der Tabelle erstellen
+	 * <select name='name' id='name'>
+	 * <option value='id' [checked='checked']>Description</option>
+	 * ...
+	 * </select>
 	 */
 	public function getHtml()
 	{
@@ -13,16 +17,16 @@ class SelectFormElement extends ListFormElement
 			$result = '--leer--';
 		}
 		else {
-			$result = "\n<select name='$this->name' id='$this->name'>";
+			$result = "<select name='$this->name' id='$this->name'>\n";
 			foreach( $this->records as $record ) {
 				$description = $this->display;
-				$result .= sprintf( '<option value="%s" %s>%s</option>'
+				$result .= sprintf( "<option value='%s' %s>%s</option>\n"
 				,	$record ->ID()
 				,	$record ->ID() === $this->value?'selected="selected"':''
 				,	$record ->$description
 				);
 			}
-			$result .= '</select>';
+			$result .= "</select>\n";
 		}
 		
 		return $result;
