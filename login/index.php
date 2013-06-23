@@ -34,7 +34,10 @@ if ($login->messages) {
 
 
 if( $login->isLoggedIn() ) : ?>
-		<a href='/admin/'>Administration</a>
+	<ul>
+	  <li><a href='/admin/'>Administration</a></i>
+	  <li><a href='/admin/user.php'>Users</a></li>
+  	</ul>
 <?php else :?>
 		<form method="post" action='<?php echo $_SERVER['SCRIPT_NAME'];?>' name='login-form'>
 			<dl>

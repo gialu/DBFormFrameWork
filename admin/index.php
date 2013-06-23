@@ -3,9 +3,25 @@ $title = 'Admin';
 
 require_once '../inc/global.inc.php';
 require_once 'template/header.php';
+
+/**
+ * Liste von Kategorien
+ */
+$katListe = new \view\SelectFormElement( 'KategorieID', '\db\Kategorie', 'Titel' );
+
 ?>
 
+	<form id='Kategorie_select' action='' method='get'>
+		<dl>
+			<dt><label for='KategorieID'>Kategorie</label></dt>
+			<dd><?php echo $katListe->getHtml( );?><input type='submit' value='Auswählen' /></dd>
+		</dl>
+		<div>
+			<input type='hidden' name='__action' value='select' />
+		</div>
+	</form>
 <?php
+
 /**
  * Form description
  * Setup for the \view\EditForm object
@@ -21,9 +37,14 @@ $FormOptions = array(
 			'label'=> 'Kategorie',
 			'default' => ''
 		),
-		'Beschreibung'=> array(
+		'Titel'=> array(
 			'type'=> 'text',
 			'label'=> 'Beschreibung',
+			'default' => ''
+		),
+		'Beschreibung'=> array(
+			'type'=> 'textarea',
+			'label'=> 'Details',
 			'default' => ''
 		),
 		'LogoURL'=> array(
@@ -47,6 +68,11 @@ $FormOptions = array(
  * Errors during this process are stored in the message property
  */
 $form = new \view\EditForm( $FormOptions );
+/**
+ * HTML Formular erstellen an hand der FormOptions
+ * evt. $_REQUEST Werte werden interpretiert
+ */
+echo $form->getHtml( );
 // show positive messages
 if( $form->messages ) {
 	foreach( $form->messages as $message ) {
@@ -56,11 +82,6 @@ if( $form->messages ) {
 
 
 /**
- * HTML Formular erstellen an hand der FormOptions
- * evt. $_REQUEST Werte werden interpretiert
- */
-echo $form->getHtml( );
-/**
  * Hat der Datensatzt schon eine ID
  * dann kann man diese löschen
  */
@@ -68,23 +89,7 @@ if( !is_null($form->getID()) ) {
 	echo $form->getDeleteForm( );
 }
 
-/**
- * Liste von Kategorien
- */
-$katListe = new \view\SelectFormElement( 'KategorieID', '\db\Kategorie', 'Beschreibung' );
-
 ?>
-
-	<form id='Kategorie_select' action='' method='get'>
-		<dl>
-			<dt><label>Kategorie<?php echo $katListe->getHtml( );?></label></dt>
-		</dl>
-		<div>
-			<input type='hidden' name='__action' value='select' />
-			<input type='submit' value='Auswählen' />
-		</div>
-	</form>
-
 	<p><a href='../login/?logout'>Abmelden</a></p>
 
 <?php

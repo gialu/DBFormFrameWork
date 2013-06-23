@@ -4,15 +4,63 @@ $title = 'Admin';
 require_once '../inc/global.inc.php';
 require_once 'template/header.php';
 
+/**
+ * Liste von Benutzer
+ */
+$view = new \view\SelectFormElement( 'BenutzerID', '\db\Benutzer', 'Name' );
 ?>
-	<div id='header'>
-		<h1><?php echo $title?></h1>
-	</div>
-
-	<form name='Benutzer' action='' method='POST'>
-
+	<form id='Kategorie_select' action='' method='get'>
+		<dl>
+			<dt><label for='BenutzerID'>Benutzer</label></dt>
+			<dd><?php echo $view->getHtml( );?><input type='submit' value='Auswählen' /></dd>
+		</dl>
+		<div>
+			<input type='hidden' name='__action' value='select' />
+		</div>
+	</form>
 <?php
-$form = new \view\EditForm( '\db\Benutzer' );
+$FormOptions = array(
+	'FormName' => 'Benutzer',
+	'FormType' => 'get',
+	'ParamIDName'=> 'BenutzerID',
+	'RecordClassName'=> '\db\Benutzer',
+	'Fields'=> array(
+		'Name'=> array(
+			'type'=> 'text',
+			'label'=> 'Anmeldename',
+			'default' => ''
+		),
+		'Vorname'=> array(
+			'type'=> 'text',
+			'label'=> 'Vorname',
+			'default' => ''
+		),
+		'Nachname'=> array(
+			'type'=> 'text',
+			'label'=> 'Nachname',
+			'default' => ''
+		),
+		'Hash'=> array(
+			'type'=> 'password',
+			'label'=> 'Kennwort',
+			'default' => ''
+		),
+		'email'=> array(
+			'type'=> 'text',
+			'label'=> 'E-Mail',
+			'default' => ''
+		),
+		'BenutzerTypeID'=> array(
+			'type'=> 'select',
+			'label'=> 'Gruppe',
+			'default' => '',
+			'recordType'=> '\db\BenutzerType',
+			'displayField'=> 'Name'
+		)
+	)
+);
+		
+		$form = new \view\UserEditForm( $FormOptions );
 // show positive messages
 if ($form->messages) {
     foreach ($form->messages as $message) {
@@ -20,28 +68,20 @@ if ($form->messages) {
     }
 }
 
-echo $form->getForm( );
-?>
-		<input type='submit' value='<?php echo is_null( $form->getID() )?'Erstellen':'Ändern';?>' />
-	</form>
-<?php if( !is_null($form->getID()) ) : ?>
+echo $form->getHtml( );
+// show positive messages
+if( $form->messages ) {
+	foreach( $form->messages as $message ) {
+		echo '<h2>' . $message . '</h2>';
+	}
+}
 
-	<form name='entfernen' action='' method='POST'>
-		<?php echo $form->getDeleteForm();?>
-		<input type='submit' value='Entfernen' />
-	</form>
-
-<?php endif; ?>
-
-	<form name='UserListe' action='' method='GET'>
-<?php
-
-$view = new \view\SelectFormElement( '\db\Benutzer' );
-echo $view->getHtml( 'Benutzer', 'Name' );
+if( !is_null($form->getID()) ) {
+	echo $form->getDeleteForm( );
+}
 
 ?>
-		<input type='submit' value='Auswählen' />
-		<input type='hidden' name='action' value='select' />
-	</form>
+	<p><a href='../login/?logout'>Abmelden</a></p>
+
 <?php
 require_once 'template/footer.php';

@@ -3,10 +3,10 @@
  * Kategorie
  */
 namespace db;
-class HauptKategorie extends Record
+class BenutzerType extends Record
 {
-	static protected function getTableName() { return 'hauptkategorie'; }
-	static protected function getPrimaryKeyName() { return 'HauptKategorieID'; }
+	static protected function getTableName() { return 'benutzertype'; }
+	static protected function getPrimaryKeyName() { return 'BenutzerTypeID'; }
 
 	static private $fieldNames = null;
 	static protected function getFieldNames()

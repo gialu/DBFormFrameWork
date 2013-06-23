@@ -12,9 +12,9 @@ abstract class FormElement
 		return $this->Value;
 	}
 	
-	public function __construct( $name )
+	public function __construct( $name, $value )
 	{
 		$this->name = $name;
-		$this->value = EditForm::getParam( $this->name );
+		$this->value = EditForm::getParam( $this->name, $value );
 	}
 }

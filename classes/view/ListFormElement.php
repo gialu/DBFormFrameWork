@@ -27,7 +27,6 @@ abstract class ListFormElement extends FormElement
 
 		$this->records = $records;
 		$this->display = $display;
-		$this->value = EditForm::getParam( $this->name, $this->value );
 	}
 	/**
 	 * HTML <select> list der Tabelle erstellen

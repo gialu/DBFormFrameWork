@@ -21,8 +21,8 @@ class SelectFormElement extends ListFormElement
 			foreach( $this->records as $record ) {
 				$description = $this->display;
 				$result .= sprintf( "<option value='%s' %s>%s</option>\n"
-				,	$record ->ID()
-				,	$record ->ID() === $this->value?'selected="selected"':''
+				,	$record ->getID()
+				,	$record ->getID() == $this->value?'selected="selected"':''
 				,	$record ->$description
 				);
 			}

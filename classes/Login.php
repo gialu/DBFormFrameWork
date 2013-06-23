@@ -1,14 +1,18 @@
 <?php
-
-// based on http://alias.io/2010/01/store-passwords-safely-with-php-and-mysql/
+/**
+ * Login class
+ * 
+ * @project:	db_test (wp11-12-99)
+ * @module:	View
+ * @copyright:	2013 SBW Neue Media AG
+ * @author:	Johannes Kingma
+ * based on http://alias.io/2010/01/store-passwords-safely-with-php-and-mysql/
+ */
 
 class Login {
-	const
-	MAX_ATTEMPT = 3;
-	
-	private $db = null;
-	private $username = "";
-	private $password_hash = "";
+	const MAX_ATTEMPT = 3;
+	private $benutzer = null;
+
 	private $loggedIn = 0;
 	public function isLoggedIn() {return $this->loggedIn;}
 
@@ -26,7 +30,7 @@ class Login {
 		if( isset($_GET["logout"]) ){
 			$this->doLogout();
 		}
-		elseif( !empty($_SESSION['username']) && ($_SESSION['logged_in'] == 1) ) {
+		elseif( !empty($_SESSION['benutzername']) && ($_SESSION['benutzer_logged_in'] == 1) ) {
 			$this->loginWithSession();
 		}
 		elseif( isset($_POST['login']) ) {
@@ -43,7 +47,24 @@ class Login {
 	private function loginWidthPostData()
 	{
 		if( !empty($_POST['benutzer']) && !empty($_POST['kennwort']) ) {
-			$this->testCredentials();
+			$benutzer = new \db\Benutzer( );
+			try
+			{
+				$benutzer->testCredentials($_POST['benutzer'], $_POST['kennwort']);
+				$_SESSION['benutzername'] = $benutzer->Name;
+				$_SESSION['vorname'] = $benutzer->Name;
+				$_SESSION['nachname'] = $benutzer->Name;
+				$_SESSION['benutzeremail'] = $benutzer->email;
+				$_SESSION['benutzer_logged_in'] = 1;
+				
+				$this->messages[] = 'Erfolgreich angemeldet';
+				$this->loggedIn = true;
+			}
+			catch( Exception $e )
+			{
+				$this->errors[] = $e->getMessage();	
+			}
+
 		}
 		elseif( empty($_POST['benutzer']) ) {
 			$this->errors[] = 'Kein Benutzername.';
@@ -64,7 +85,7 @@ class Login {
 			$this->errors[] = 'Benutzername falsch';
 		}
 		else {
-			$user = $stmt->fetchObject();
+			$user = $stmt->fetch( \PDO::FETCH_ASSOC );
 			// Hashing the password with its hash as the salt returns the same hash
 			if ( crypt($_POST['kennwort'], $user->Hash) != $user->Hash ) {
 				$this->errors[] = 'Kennwort falsch';

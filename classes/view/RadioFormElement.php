@@ -25,8 +25,8 @@ class RadioFormElement extends ListFormElement
 
 				$result .= sprintf( '<dd><input type="radio" name="%1$s" value="%2$s" %3$s /></dd>'
 					,	$this->name
-					,	$record ->ID()
-					,	$record ->ID() === $this->value?'checked="checked"':''
+					,	$record ->getID()
+					,	$record ->getID() === $this->value?'checked="checked"':''
 				);
 			}
 			$result .= '</dl>';

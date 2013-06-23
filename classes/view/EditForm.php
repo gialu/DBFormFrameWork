@@ -5,9 +5,22 @@ namespace view;
 class EditForm 
 {
 	protected $record;
-	public function getID() { return is_null($this->record)?null:$this->record->ID(); }
+	/**
+	 * ID der Datensatzt die geöffnet ist
+	 * @return null oder die ID
+	 */
+	public function getID()
+	{
+		return is_null($this->record)? null: $this->record->getID();
+	}
 
+	/**
+	 * Gefäss für Fehlermeldungen
+	 */
 	public $errors = array();
+	/**
+	 * Gefäss für Meldungen
+	 */
 	public $messages = array();
 
 	protected $FormName = null;
@@ -26,6 +39,40 @@ class EditForm
 	 * which describe the input type, the label to be displayed and the default value for empty or new records
 	 * For foreign keys one can use a select list where additionally keys are needed: 'recordType', 'displayField'.
 	 * These should contain the db\Record based class for the foreign tabel and the name of the column to be display in the list 
+	 * 
+	 * $FormDesc = array(
+			'FormName' => 'Kategorie',
+			'FormType' => 'get',
+			'ParamIDName'=> 'KategorieID',
+			'RecordClassName'=> '\db\RecordSubclass',
+			'Fields'=> array(
+				'Field1'=> array(
+					'type'=> 'text',
+					'label'=> 'Label1',
+					'default' => ''
+				),
+				'Field2'=> array(
+					'type'=> 'textarea',
+					'label'=> 'Label2',
+					'default' => ''
+				),
+				'FK1'=> array(
+					'type'=> 'select',
+					'label'=> 'Label3',
+					'default' => '',
+					'recordType'=> '\db\RecordSubclass2',
+					'displayField'=> 'Field1'
+				)
+				'FK2'=> array(
+					'type'=> 'select',
+					'label'=> 'Label4',
+					'default' => '',
+					'recordType'=> '\db\RecordSubclass3',
+					'displayField'=> 'Field1'
+				)
+			)
+		);
+	 * 
 	 */
 	public function __construct( $description )
 	{
@@ -46,17 +93,10 @@ class EditForm
 
 		if( isset($_REQUEST['__action']) ) {
 			switch($_REQUEST['__action']) {
-				default:
-					break;
-				case 'add':
-					$this->doSave();
-					break;
-				case 'update':
-					$this->doUpdate();
-					break;
-				case 'delete':
-					$this->doDelete();
-					break;
+				default: break;
+				case 'add':    $this->doSave();	break;
+				case 'update': $this->doUpdate(); break;
+				case 'delete': $this->doDelete(); break;
 			}
 		}
 	}
@@ -123,6 +163,11 @@ class EditForm
 
 			switch( $fieldAttributes['type'] ) {
 				default:
+				case 'textarea':
+					$fieldText = "<dt><label for='$fieldName'>$label</label></dt>\n";
+					$fieldText .= "<dd><textarea name='$fieldName'>$value</textarea></dd>\n";
+					
+					break;
 				case 'text':
 					$fieldText = "<dt><label for='$fieldName'>$label</label></dt>\n";
 					$fieldText .= "<dd><input type='text' name='$fieldName' value='$value' /></dd>\n";
@@ -152,7 +197,7 @@ class EditForm
 
 		$result .= "<div>";
 
-		$result .= "<input type='hidden' name='{$this->paramIDName}' value='{$this->record->ID()}' />\n";
+		$result .= "<input type='hidden' name='{$this->paramIDName}' value='{$this->record->getID()}' />\n";
 		$action = $this->record->isRecord()?'update':'add';
 		$result .= "<input type='hidden' name='__action' value='{$action}' />\n";
 		
@@ -180,7 +225,7 @@ class EditForm
 		$result = "
 			<form id='{$this->FormName}_delete' action='' method='$this->FormType'>
 			<div>
-				<input type='hidden' name='{$this->paramIDName}' value='{$this->record->ID()}' />
+				<input type='hidden' name='{$this->paramIDName}' value='{$this->record->getID()}' />
 				<input type='hidden' name='__action' value='delete' />
 				<input type='submit' value='Entfernen' />
 			</div>

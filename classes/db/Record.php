@@ -1,6 +1,9 @@
 <?php
 /**
- * Table
+ * @project:	db_test (wp11-12-99)
+ * @module:	Record
+ * @copyright:	2013 SBW Neue Media AG
+ * @author:	Johannes Kingma
  */
 namespace db;
 
@@ -21,45 +24,36 @@ abstract class Record
 	/**
 	 * access the Internal Fields array
 	 */
-	public function getFields( )
-	{
-		return $this->fields;
-	}
+	public function getFields( ) { return $this->fields; }
 
 	/**
 	 * Schon im Datenbank?
 	 */
-	public function isRecord( )
-	{
-		return $this->ID != 0;
-	}
+	public function isRecord( )	{ return $this->ID != 0; }
 
 	/**
 	 * ID ausgeben
 	 */
-	public function ID( )
-	{
-		return $this->ID;
-	}
+	public function getID( ) {	return $this->ID; }
 
 	/**
 	 * Welcher Tabellenname
 	 */
-	static protected function tableName() {throw new Exception('tableName not defined');}
+	static protected function getTableName() {throw new Exception('tableName not defined');}
 	/**
 	 * Was ist die Primary Key spallte?
 	 */
-	static protected function primaryKeyName() {throw new Exception('primaryKeyName not defined');}
+	static protected function getPrimaryKeyName() {throw new Exception('primaryKeyName not defined');}
 	/**
 	 * In welche Spallten sind wir interessiert?
 	 */
-	static protected function fieldNames() {throw new Exception('fieldNames not defined');}
+	static protected function getFieldNames() {throw new Exception('fieldNames not defined');}
 	/**
 	 * Field
 	 */
 	protected function zeroFieldList()
 	{
-		foreach( static::fieldnames() as $fieldname )
+		foreach( static::getFieldNames() as $fieldname )
 		{
 			$this->fields[$fieldname] = '';
 		}
@@ -95,15 +89,15 @@ abstract class Record
 	{
 		$query = sprintf
 			( 'select %s from `%s` where `%s` = :ID'
-			, $this->getFieldList( false )
-			, static::tableName( )
-			, static::primaryKeyName( )
+			, self::getFieldList( false )
+			, static::getTableName()
+			, static::getPrimaryKeyName( )
 			);
 
 		$stmt = Database::getConnection( )->prepare( $query );
 		$stmt->bindParam( ':ID', $id );
 		if( $stmt->execute( ) ) {
-			if( $result = $stmt->fetchObject( ) ) {
+			if( $result = $stmt->fetch( \PDO::FETCH_ASSOC ) ) {
 				$this->parseResultset( $result );
 				$this->ID = $id;
 				return true;
@@ -127,17 +121,19 @@ abstract class Record
 	 */
 	static public function findAll( $where = null, $order = null )
 	{
-		$query = sprintf( 'select %s from `%s`', self::getFieldList( true ), static::tableName( ) );
+		$query = sprintf( 'select %s from `%s`'
+			, self::getFieldList( true )
+			, static::getTableName()
+			);
 		if( $where )
 			$query .= ' where ' . $where;
 		if( $order )
 			$query .= ' order by `' . implode( '`,`', $order ) . '`';
 
 		$stmt = Database::getConnection( )->prepare( $query );
-
 		$result = array( );
 		if( $stmt->execute( ) ) {
-			while( $db_result = $stmt->fetchObject( ) ) {
+			while( $db_result = $stmt->fetch( \PDO::FETCH_ASSOC ) ) {
 				$record = new static( );
 				$record->parseResultset( $db_result );
 				$result[] = $record;
@@ -158,7 +154,10 @@ abstract class Record
 			$refl = new \ReflectionClass( $this );
 			throw new Exception( $refl->getFileName( ) . ':ID nicht gesetzt.' );
 		}
-		$query = sprintf( 'delete from `%s` where `%s` = :ID', static::tableName( ), static::primaryKeyName( ) );
+		$query = sprintf( 'delete from `%s` where `%s` = :ID'
+			, static::getTableName()
+			, static::getPrimaryKeyName( )
+			);
 
 		$stmt = Database::getConnection( )->prepare( $query );
 		$stmt->bindParam( ':ID', $this->ID );
@@ -168,7 +167,7 @@ abstract class Record
 		}
 		else {
 			$errorInfo = $stmt->errorInfo( );
-			$message = sprintf( 'Could not delete %s, (%s)', $this->tableName( ), $errorInfo[2] );
+			$message = sprintf( 'Could not delete %s, (%s)', $this->getTableName(), $errorInfo[2] );
 			throw new Exception( $message );
 		}
 	}
@@ -189,7 +188,11 @@ abstract class Record
 	 */
 	protected function insert( )
 	{
-		$query = sprintf( 'insert into `%s`(%s) values( %s )', $this->tableName( ), $this->getFieldList( ), $this->getFieldPlacholders( ) );
+		$query = sprintf( 'insert into `%s`(%s) values( %s )'
+			, static::getTableName()
+			, self::getFieldList( )
+			, $this->getFieldPlacholders( )
+			);
 		$stmt = Database::getConnection( )->prepare( $query );
 		$this->bindFields( $stmt );
 
@@ -199,7 +202,7 @@ abstract class Record
 		}
 		else {
 			$errorInfo = $stmt->errorInfo( );
-			$message = sprintf( 'Could not save %s. (%s)', $this->tableName( ), $errorInfo[2] );
+			$message = sprintf( 'Could not save %s. (%s)', static::getTableName(), $errorInfo[2] );
 			throw new Exception( $message );
 		}
 	}
@@ -209,7 +212,10 @@ abstract class Record
 	 */
 	protected function update( )
 	{
-		$query = sprintf( 'update %s set %s where %s = :ID', $this->tableName( ), $this->getUpdateList( ), $this->primaryKeyName( ) );
+		$query = sprintf( 'update %s set %s where %s = :ID'
+			, static::getTableName()
+			, self::getUpdateList( )
+			, static::getPrimaryKeyName( ) );
 		$stmt = Database::getConnection( )->prepare( $query );
 		$this->bindFields( $stmt );
 		$stmt->bindParam( ':ID', $this->ID );
@@ -218,24 +224,24 @@ abstract class Record
 		}
 		else {
 			$errorInfo = $stmt->errorInfo( );
-			$message = sprintf( 'Could not save %s. (%s)', $this->tableName( ), $errorInfo[2] );
+			$message = sprintf( 'Could not save %s. (%s)', $this->getTableName(), $errorInfo[2] );
 			throw new Exception( $message );
 		}
 	}
 
-	static private function getFieldList( $withID = false )
+	static protected function getFieldList( $withID = false )
 	{
 		if( $withID )
-			$result = static::primaryKeyName( ) . ',';
+			$result = static::getPrimaryKeyName( ) . ',';
 		else
 			$result = '';
-		return $result . '`' . implode( '`,`', static::fieldNames( ) ) . '`';
+		return $result . '`' . implode( '`,`', static::getFieldNames( ) ) . '`';
 	}
 
-	private function getUpdateList( )
+	static private function getUpdateList( )
 	{
 		$result = array( );
-		foreach( static::fieldNames() as $field ) {
+		foreach( static::getFieldNames( ) as $field ) {
 			$result[] = '`' . $field . '`=:' . $field;
 		}
 		return implode( ',', $result );
@@ -256,7 +262,7 @@ abstract class Record
 	protected function parseResultset( $result )
 	{
 		foreach( $result as $field=> $value ) {
-			if( $field === $this->primaryKeyName( )) $this->ID = $value;
+			if( $field === static::getPrimaryKeyName( )) $this->ID = $value;
 			$this->fields[$field] = $value;
 		}
 		$this->dirty = false;
