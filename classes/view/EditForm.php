@@ -176,6 +176,13 @@ class EditForm
 					$fieldText .= "<dd>$value</dd>\n";
 					break;
 
+				case 'image':
+					$path = $fieldAttributes['root'] . '/' . $value;
+					$height = $fieldAttributes['size']['height'];
+					$width = $fieldAttributes['size']['width'];
+					$fieldText .= "<dd><img src='$path' alt='$label' height='$height' width='$width' /></dd>";
+					break;
+
 				case 'password':
 					$fieldText .= "<dd>****</dd>\n";
 					break;
@@ -184,14 +191,15 @@ class EditForm
 				case 'select':
 					$fieldRecord = new $fieldAttributes['recordType'];
 					$fieldRecord->find( $value );
-					$fieldText = $fieldRecord-> $fieldAttributes['displayField'];
-					$fieldText .= "<dd>$fieldText</dd>\n";
+					$fieldText .= "<dd>{$fieldRecord-> $fieldAttributes['displayField']}</dd>";
 					break;
 
 			}
 			$result .= $fieldText;					
 		}
 		$result .= "</dl>\n";
+		
+		return $result;
 	}
 	/**
 	 * Erstellen das Formular- HTML
@@ -214,6 +222,7 @@ class EditForm
 					
 					break;
 				case 'text':
+				case 'image':
 					$fieldText = "<dt><label for='$fieldName'>$label</label></dt>\n";
 					$fieldText .= "<dd><input type='text' name='$fieldName' value='$value' /></dd>\n";
 					break;
