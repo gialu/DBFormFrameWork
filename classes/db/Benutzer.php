@@ -1,7 +1,14 @@
 <?php
 /**
- * Kategorie
+ * Benutzer - Subklasse von Record für Benutzertabelle
+ * @package DBForm
+ * @subpackage Benutzer
+ * @uses Record
+ * @version $i$d 
+ * @author Johannes Kingma jkingma@sbw-media.ch
+ * @copyright 2013 SBWNMAG
  */
+
 namespace db;
 
 class Benutzer extends Record
@@ -17,6 +24,34 @@ class Benutzer extends Record
 		return self::$fieldNames;
 	}
 	
+	/**
+	 * Attribut setzen
+	 * @param $name Name des Attributs
+	 * @param $value Neuer Wert des attributs
+	 * ist $name === 'Hash' so wird der Hash berechnet und gespeichert
+	 */
+	public function __set( $name, $value )
+	{
+		if( $name === 'Hash' ) {
+			// store passwords as MD5
+			// A higher "cost" is more secure but consumes more processing power
+			$cost = 10;
+			// Create a random salt
+			$salt = strtr( base64_encode( mcrypt_create_iv( 16, MCRYPT_DEV_URANDOM ) ), '+', '.' );
+			// Prefix information about the hash so PHP knows how to verify it later.
+			// "$2a$" Means we're using the Blowfish algorithm. The following two digits are the cost parameter.
+			$salt = sprintf( "$2a$%02d$", $cost ) . $salt;
+	
+			// Hash the password with the salt
+			$value = crypt( $value, $salt );
+		}
+		parent::__set( $name, $value );
+	}
+	/**
+	 * Überprüfen ob benutzername und kennwort übereinstimmen
+	 * @param $benutzerName
+	 * @param $kennwort
+	 */
 	public function testCredentials( $benutzerName, $kennwort )
 	{
 		$query = sprintf

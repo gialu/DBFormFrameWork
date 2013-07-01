@@ -9,6 +9,8 @@
  */
 
 ?>
-</div>
+   </div><!-- haupt - ende-->
+</div><!-- content - ende-->
+</div><!-- page - ende-->
 </body>
 </html>

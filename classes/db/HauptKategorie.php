@@ -1,7 +1,13 @@
 <?php
 /**
- * Kategorie
+ * HauptKategorie - Subklasse für Hautpkategorie - Tabelle 
+ * @package db
+ * @uses Record
+ * @version $i$d 
+ * @author Johannes Kingma jkingma@sbw-media.ch
+ * @copyright 2013 SBWNMAG
  */
+
 namespace db;
 class HauptKategorie extends Record
 {

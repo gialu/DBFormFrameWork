@@ -12,9 +12,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="de">
 <head>
 	<title><?php echo $title?></title>
-	<meta charset='UTF-8'>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<link rel="stylesheet" href="template/layout.css" media="all">
 </head>
 <body>
-<div style="width: 1024px; margin: 10px auto 0px auto;">
+<div id='page'>
+<div class='content section'>
+  <div id="kopf">
+	<h1>Kopfzeile</h1>
+  </div>
+  <div id="navi">
+	<ul>
+	  <li><a href="admin/">Logon</a></li>
+	</ul>
+  </div>
+  <div id="haupt">
 

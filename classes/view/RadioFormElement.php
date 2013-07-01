@@ -1,4 +1,12 @@
 <?php
+/**
+ * RadioFromElement - abstract Subklasse für die Darstellung von Radio buttons
+ * @package view
+ * @uses ListFormElement
+ * @version $i$d 
+ * @author Johannes Kingma jkingma@sbw-media.ch
+ * @copyright 2013 SBWNMAG
+ */
 namespace view;
 
 class RadioFormElement extends ListFormElement

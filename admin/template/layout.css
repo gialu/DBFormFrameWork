@@ -1,10 +1,87 @@
+* { padding:0;margin:0; }
+body {
+	background-color:hsl(100,30%,90%);
+	font-family: 'Myriad Pro', sans-serif;
+	color:hsl(100,30%,4%);
+}
+
+p {
+	padding: 5px 0;
+}
+/* navi */
+#navi li a {
+	text-decoration:none;
+	color:hsl(100,30%,10%);
+	font-family:Century Gothic,sans;
+	font-size:0.8em;
+}
+#navi li:hover{
+	cursor:pointer;
+	background-color:hsl(100,30%,10%);
+}
+#navi li:hover a{
+	color:hsl(100,30%, 80%);
+}
+#kopf {
+	background-color:hsl(100,75%,20%);
+	color:hsl(100,50%,80%);
+	padding:2px 5px;
+	font-family:Century Gothic,sans;
+	font-variant:small-caps;
+	letter-spacing:4px;
+}
+#page {
+	max-width: 900px;
+	margin: 0px auto;
+	overflow:auto;
+	background:url(wrapper-back.png) repeat-y;
+}
+.content {
+	margin: 0 auto 53px;
+	width:900px;
+}
+	.content #haupt {
+		font-size: 0.8em;
+		width: 566px;
+		float:right;
+	}
+		.content #haupt form {
+			padding:10px;
+		}
+	.content #navi {
+		float:left;
+		width: 310px;
+	}
+		.content #navi ul {
+			padding:10px;
+			width:100%;
+		}
+	.content #navi li{
+		text-decoration:none;
+		list-style:none;
+	}
+input[type=text],
+input[type=password],
+input[type=submit],
+input[type=button],
+textarea,
+fieldset {
+	font-family: 'Myriad Pro', sans-serif;
+	border:hsl(100,80%,10%) 1.5px solid;
+	-webkit-border-radius:2px; -moz-border-radius: 2px; border-radius: 2px;
+	padding: 5px;
+}
+
+input[type=submit] { width:100px; }
+
+
 dt {
     float: left;
     clear: left;
     width: 100px;
     text-align: right;
     font-weight: bold;
-    color: hsl(30,80%,10%);
+    color: hsl(30;100%,20%);
 }
 dt:after {
     content: ":";

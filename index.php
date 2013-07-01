@@ -17,8 +17,21 @@ echo $view->getHtml( );
 		<input type='submit' value='Auswählen' />
 		<input type='hidden' name='action' value='select' />
 	</form>
+<?php
 
-	<a href='/login/'>Anmelden</a>
+$angebot = new \db\Kategorie();
+$angebot->find( \view\EditForm::getParam( 'Kategorie' ) );
+$hauptkategorie = new \db\HauptKategorie( $angebot->HauptKategorieID );
+?>
+	<dl>
+		<dd><img src='/images/<?php echo $angebot->LogoURL;?>' alt=<?php echo $angebot->Titel;?> width=100  /></dd>
+		<dt>Angebot</dt>
+		<dd><?php echo $angebot->Titel;?></dd>
+		<dt>Hauptkategorie</dt>
+		<dd><?php echo $hauptkategorie->Name;?></dd>
+		<dt>Beschreibung</dt>
+		<dd><?php echo $angebot->Beschreibung;?></dd>
+	</dl>
 <?php
 require_once 'template/footer.php';
 

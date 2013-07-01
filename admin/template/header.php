@@ -21,6 +21,16 @@ if( !$login->isLoggedIn() ) {
 	<link rel="stylesheet" href="template/layout.css" media="all" />
 </head>
 <body>
-<div style="width: 960; margin: 10px auto 0px auto;">
-<div id='header'><h1><?php echo $title?></h1></div>
-
+<div id='page'>
+<div class='content section'>
+  <div id="kopf">
+	<h1><?php echo $title?></h1>
+  </div>
+  <div id="navi">
+	<ul>
+	  <li><a href="admin/">Administration</a></li>
+	  <li><a href="admin/user.php">Benutzer</a></li>
+	  <li><a href='../login/?logout'>Abmelden</a></li>
+	</ul>
+  </div>
+  <div id="haupt">

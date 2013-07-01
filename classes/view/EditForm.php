@@ -1,4 +1,12 @@
 <?php
+/**
+ * EditFrom - Klasse für DB <-> form  
+ * @package view
+ * @uses Record
+ * @version $i$d 
+ * @author Johannes Kingma jkingma@sbw-media.ch
+ * @copyright 2013 SBWNMAG
+ */
 
 namespace view;
 
@@ -87,7 +95,7 @@ class EditForm
 
 		// ensure base class is \db\Record
 		if( !is_subclass_of($record, '\db\Record') )
-			throw new Exception( '$record expected to be child of \db\Record' );
+			throw new Exception( '$record expected to be child of /db/Record' );
 
 		$this->record = $record;
 
@@ -165,12 +173,17 @@ class EditForm
 				default:
 				case 'textarea':
 					$fieldText = "<dt><label for='$fieldName'>$label</label></dt>\n";
-					$fieldText .= "<dd><textarea name='$fieldName'>$value</textarea></dd>\n";
+					$fieldText .= "<dd><textarea name='$fieldName' rows='10' cols='40'>$value</textarea></dd>\n";
 					
 					break;
 				case 'text':
 					$fieldText = "<dt><label for='$fieldName'>$label</label></dt>\n";
 					$fieldText .= "<dd><input type='text' name='$fieldName' value='$value' /></dd>\n";
+					break;
+
+				case 'password':
+					$fieldText = "<dt><label for='$fieldName'>$label</label></dt>\n";
+					$fieldText .= "<dd><input type='password' name='$fieldName' value='$value' /></dd>\n";
 					break;
 
 				case 'select':
@@ -200,7 +213,12 @@ class EditForm
 		$result .= "<input type='hidden' name='{$this->paramIDName}' value='{$this->record->getID()}' />\n";
 		$action = $this->record->isRecord()?'update':'add';
 		$result .= "<input type='hidden' name='__action' value='{$action}' />\n";
-		
+		// show positive messages
+		if( $this->messages ) {
+			foreach( $this->messages as $message ) {
+				$result .= '<p>' . $message . '</p>';
+			}
+		}		
 		$buttonName = $this->getID( )==0 ? 'Erstellen' : 'Ändern';
 		$result .= "<input type='submit' value='$buttonName' />\n";
 
@@ -208,7 +226,7 @@ class EditForm
 		$result .= "</form>";
 				
 		$result .= "
-			<form id='{$this->FormName}_new' action='{$_SERVER['SCRIPT_NAME']}' method='{$this->FormType}'>
+			<form style='float:left' id='{$this->FormName}_new' action='{$_SERVER['SCRIPT_NAME']}' method='{$this->FormType}'>
 			<div>
 				<input type='submit' value='Zurücksetzen' />
 			</div> 
@@ -223,7 +241,7 @@ class EditForm
 	public function getDeleteForm()
 	{
 		$result = "
-			<form id='{$this->FormName}_delete' action='' method='$this->FormType'>
+			<form style='float:left;' id='{$this->FormName}_delete' action='' method='$this->FormType'>
 			<div>
 				<input type='hidden' name='{$this->paramIDName}' value='{$this->record->getID()}' />
 				<input type='hidden' name='__action' value='delete' />
@@ -248,8 +266,8 @@ class EditForm
 	 */
 	private function storeParams()
 	{
-		foreach( $this->record->getFields() as $key => $value ) {
-			$this->record->$key = $_REQUEST[$key];
+		foreach( $this->fields as $fieldName => $fieldAttributes ) {
+			$this->record->$fieldName = $_REQUEST[$fieldName];
 		}
 	
 	}

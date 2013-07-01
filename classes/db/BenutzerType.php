@@ -1,6 +1,11 @@
 <?php
 /**
- * Kategorie
+ * BenutzerType - Subklasse von Record für Benutzertype
+ * @uses Record
+ * @package db
+ * @version $i$d 
+ * @author Johannes Kingma jkingma@sbw-media.ch
+ * @copyright 2013 SBWNMAG
  */
 namespace db;
 class BenutzerType extends Record

@@ -2,21 +2,30 @@
 require_once '../inc/global.inc.php';
 $title = 'Login';
 $login = new Login();
-?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="de">
 <head>
 	<title><?php echo $title?></title>
-	<meta charset='UTF-8'>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<link rel="stylesheet" href="../template/layout.css" media="all">
 </head>
 <body>
-<div style="width: 1024px; margin: 10px auto 0px auto;">
-	<div id='header'>
-		<h1><?php echo $title?></h1>
-	</div>
-	<div id='page'>
+<div id='page'>
+<div class='content section'>
+  <div id="kopf">
+	<h1>Kopfzeile</h1>
+  </div>
+  <div id="navi">
+<?php if( $login->isLoggedIn() ) : ?>
+	<ul>
+	  <li><a href="../admin/">Administration</a></li>
+	  <li><a href="../admin/user.php">Benutzer</a></li>
+	  <li><a href='../login/?logout'>Abmelden</a></li>	  
+	</ul>
+<?php endif; ?>
+  </div>
+  <div id="haupt">
 <?php
 // show negative messages
 if ($login->errors) {
@@ -33,12 +42,7 @@ if ($login->messages) {
 }
 
 
-if( $login->isLoggedIn() ) : ?>
-	<ul>
-	  <li><a href='/admin/'>Administration</a></i>
-	  <li><a href='/admin/user.php'>Users</a></li>
-  	</ul>
-<?php else :?>
+if( ! $login->isLoggedIn() ) : ?>
 		<form method="post" action='<?php echo $_SERVER['SCRIPT_NAME'];?>' name='login-form'>
 			<dl>
 			<dt><label for='benutzer'>Benutzername</label></dt>

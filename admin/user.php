@@ -4,24 +4,9 @@ $title = 'Admin';
 require_once '../inc/global.inc.php';
 require_once 'template/header.php';
 
-/**
- * Liste von Benutzer
- */
-$view = new \view\SelectFormElement( 'BenutzerID', '\db\Benutzer', 'Name' );
-?>
-	<form id='Kategorie_select' action='' method='get'>
-		<dl>
-			<dt><label for='BenutzerID'>Benutzer</label></dt>
-			<dd><?php echo $view->getHtml( );?><input type='submit' value='Auswählen' /></dd>
-		</dl>
-		<div>
-			<input type='hidden' name='__action' value='select' />
-		</div>
-	</form>
-<?php
 $FormOptions = array(
 	'FormName' => 'Benutzer',
-	'FormType' => 'get',
+	'FormType' => 'post',
 	'ParamIDName'=> 'BenutzerID',
 	'RecordClassName'=> '\db\Benutzer',
 	'Fields'=> array(
@@ -80,8 +65,21 @@ if( !is_null($form->getID()) ) {
 	echo $form->getDeleteForm( );
 }
 
+/**
+ * Liste von Benutzer
+ */
+$view = new \view\SelectFormElement( 'BenutzerID', '\db\Benutzer', 'Name' );
 ?>
-	<p><a href='../login/?logout'>Abmelden</a></p>
+	<form id='Kategorie_select' action='' method='get'>
+		<dl>
+			<dt><label for='BenutzerID'>Benutzer</label></dt>
+			<dd><?php echo $view->getHtml( );?><input type='submit' value='Auswählen' /></dd>
+		</dl>
+		<div>
+			<input type='hidden' name='__action' value='select' />
+		</div>
+	</form>
 
+	<p><a href='../login/?logout'>Abmelden</a></p>
 <?php
 require_once 'template/footer.php';

@@ -1,4 +1,12 @@
 <?php
+/**
+ * SelectFromElement - abstract Subklasse für die Darstellung von select lists
+ * @package view
+ * @uses ListFormElement
+ * @version $i$d 
+ * @author Johannes Kingma jkingma@sbw-media.ch
+ * @copyright 2013 SBWNMAG
+ */
 namespace view;
 
 class SelectFormElement extends ListFormElement

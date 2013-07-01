@@ -1,4 +1,13 @@
 <?php
+/**
+ * ListFromElement - abstract Subklasse für die Darstellung von listen 
+ * @package view
+ * @uses FormElement
+ * @version $i$d 
+ * @author Johannes Kingma jkingma@sbw-media.ch
+ * @copyright 2013 SBWNMAG
+ */
+
 namespace view;
 
 /**
