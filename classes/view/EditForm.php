@@ -157,6 +157,43 @@ class EditForm
 		}
 	}
 	/**
+	 * Erstelle read only view <dl>
+	 * 
+	 */
+	public function getView()
+	{
+		$result = '<dl>';
+		foreach( $this->fields as $fieldName => $fieldAttributes ) {
+			$value = static::getParam( $fieldName, $this->record->$fieldName );
+
+			$label = $fieldAttributes['label'];
+			$fieldText = "<dt>$label</dt>\n";
+
+			switch( $fieldAttributes['type'] ) {
+				default:
+				case 'text':
+				case 'textarea':
+					$fieldText .= "<dd>$value</dd>\n";
+					break;
+
+				case 'password':
+					$fieldText .= "<dd>****</dd>\n";
+					break;
+
+				case 'radio':
+				case 'select':
+					$fieldRecord = new $fieldAttributes['recordType'];
+					$fieldRecord->find( $value );
+					$fieldText = $fieldRecord-> $fieldAttributes['displayField'];
+					$fieldText .= "<dd>$fieldText</dd>\n";
+					break;
+
+			}
+			$result .= $fieldText;					
+		}
+		$result .= "</dl>\n";
+	}
+	/**
 	 * Erstellen das Formular- HTML
 	 * entweder neu (add) oder bestehend (update)
 	 */
