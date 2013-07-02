@@ -89,3 +89,14 @@ dd {
     margin: 0 0 0 110px;
     padding: 0 0 0.5em 0;
 }
+
+.table-content tr:hover {
+	background-color:#FADEC5;
+}
+
+.table-content th {
+	text-align:left;
+	color:hsl(30,80%,90%);
+	background-color:hsl(30,80%,10%);
+	padding:2px;
+}

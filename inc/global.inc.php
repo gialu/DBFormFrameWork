@@ -5,7 +5,7 @@
  * @copyright:	2013 SBW Neue Media AG
  * @author:	Johannes Kingma
  */
-require_once 'D:/www/db/classes/Settings.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/classes/Settings.php';
 $settings = Settings::instance();
 function __autoload($class_name) {
 	$filename = $_SERVER['DOCUMENT_ROOT'] . Settings::instance()->class_lib_dir . str_replace("\\", "/", $class_name).".php";

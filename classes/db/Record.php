@@ -136,7 +136,7 @@ abstract class Record
 			while( $db_result = $stmt->fetch( \PDO::FETCH_ASSOC ) ) {
 				$record = new static( );
 				$record->parseResultset( $db_result );
-				$result[] = $record;
+				$result[$record->getID()] = $record;
 			}
 			return $result;
 		}

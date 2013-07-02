@@ -66,5 +66,18 @@ $FormOptions = array(
 $view = new \view\EditForm( $FormOptions );
 echo $view->getView();
 
+$r = new \db\Kategorie();
+$rs = $r->findAll( );
+
+echo "<table class='table-content'>\n";
+echo "<tr><th>Titel</th></tr>";
+foreach($rs as $id => $record )
+{
+	echo '<tr>';
+	echo "<td><a href=?KategorieID='$id'>" . $record->Titel . "</a></td>\n";
+	echo '</tr>';
+}
+echo '</table>';
+
 require_once 'template/footer.php';
 

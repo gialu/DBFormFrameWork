@@ -65,8 +65,10 @@ input[type=password],
 input[type=submit],
 input[type=button],
 textarea,
+select,
 fieldset {
-	font-family: 'Myriad Pro', sans-serif;
+	font: inherit;
+	color:inherit;
 	border:hsl(100,80%,10%) 1.5px solid;
 	-webkit-border-radius:2px; -moz-border-radius: 2px; border-radius: 2px;
 	padding: 5px;

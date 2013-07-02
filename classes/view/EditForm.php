@@ -265,7 +265,7 @@ class EditForm
 				$result .= '<p>' . $message . '</p>';
 			}
 		}		
-		$buttonName = $this->getID( )==0 ? 'Erstellen' : 'Ändern';
+		$buttonName = $this->getID( )==0 ? 'Speichern' : 'Speichern';
 		$result .= "<input type='submit' value='$buttonName' />\n";
 
 		$result .= "</div>";
@@ -274,7 +274,7 @@ class EditForm
 		$result .= "
 			<form style='float:left' id='{$this->FormName}_new' action='{$_SERVER['SCRIPT_NAME']}' method='{$this->FormType}'>
 			<div>
-				<input type='submit' value='Zurücksetzen' />
+				<input type='submit' value='Leeren' />
 			</div> 
 			</form>
 			";
