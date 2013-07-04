@@ -66,18 +66,33 @@ $FormOptions = array(
 $view = new \view\EditForm( $FormOptions );
 echo $view->getView();
 
-$r = new \db\Kategorie();
-$rs = $r->findAll( );
+$TableOptions = array(
+	'ParamIDName'=> 'KategorieID',
+	'RecordClassName'=> '\db\Kategorie',
+	'Fields'=> array(
+		'Name'=> array(
+			'type'=> 'text',
+			'label'=> 'Kategorie',
+			'default' => ''
+		),
+		'Titel'=> array(
+			'type'=> 'text',
+			'label'=> 'Titel',
+			'default' => ''
+		),
+		'HauptKategorieID'=> array(
+			'type'=> 'reference',
+			'label'=> 'Gruppe',
+			'default' => '',
+			'recordType' => '\db\HauptKategorie',
+			'displayField'=> 'Name'
+		)
+	)
+);
 
-echo "<table class='table-content'>\n";
-echo "<tr><th>Titel</th></tr>";
-foreach($rs as $id => $record )
-{
-	echo '<tr>';
-	echo "<td><a href=?KategorieID='$id'>" . $record->Titel . "</a></td>\n";
-	echo '</tr>';
-}
-echo '</table>';
+$table = new \view\RecordTable( $TableOptions );
+echo $table->getHtml();
+
 
 require_once 'template/footer.php';
 

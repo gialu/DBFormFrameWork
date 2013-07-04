@@ -13,7 +13,7 @@
 <head>
 	<title><?php echo $title?></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<link rel="stylesheet" href="template/layout.css" media="all">
+	<link rel="stylesheet" href="/template/layout.css" media="all">
 </head>
 <body>
 <div id='page'>

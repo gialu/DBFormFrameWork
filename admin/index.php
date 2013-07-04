@@ -36,7 +36,7 @@ $FormOptions = array(
 			'default' => ''
 		),
 		'HauptKategorieID'=> array(
-			'type'=> 'select',
+			'type'=> 'radio',
 			'label'=> 'Gruppe',
 			'default' => '',
 			'recordType'=> '\db\HauptKategorie',

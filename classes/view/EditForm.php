@@ -162,6 +162,7 @@ class EditForm
 	 */
 	public function getView()
 	{
+			
 		$result = '<dl>';
 		foreach( $this->fields as $fieldName => $fieldAttributes ) {
 			$value = static::getParam( $fieldName, $this->record->$fieldName );
@@ -218,18 +219,18 @@ class EditForm
 				default:
 				case 'textarea':
 					$fieldText = "<dt><label for='$fieldName'>$label</label></dt>\n";
-					$fieldText .= "<dd><textarea name='$fieldName' rows='10' cols='40'>$value</textarea></dd>\n";
+					$fieldText .= "<dd><textarea id='$fieldName' name='$fieldName' rows='10' cols='40'>$value</textarea></dd>\n";
 					
 					break;
 				case 'text':
 				case 'image':
 					$fieldText = "<dt><label for='$fieldName'>$label</label></dt>\n";
-					$fieldText .= "<dd><input type='text' name='$fieldName' value='$value' /></dd>\n";
+					$fieldText .= "<dd><input id='$fieldName' type='text' name='$fieldName' value='$value' /></dd>\n";
 					break;
 
 				case 'password':
 					$fieldText = "<dt><label for='$fieldName'>$label</label></dt>\n";
-					$fieldText .= "<dd><input type='password' name='$fieldName' value='$value' /></dd>\n";
+					$fieldText .= "<dd><input id='$fieldName' type='password' name='$fieldName' value='$value' /></dd>\n";
 					break;
 
 				case 'select':

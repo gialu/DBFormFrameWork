@@ -7,40 +7,28 @@
  */
 namespace db;
 
-class RecordSet
+/**
+ * Sammlung von Records
+ * mit Zwischenspeicher
+ */
+class RecordSet implements \Iterator
 {
 	protected $recordType;
+	protected $where;
+	protected $order;
+	
 	protected $records = array();
-	public function __contstruct( $recordType )
-	{
-		$this->recordType = $recordType;
-	}
-	public fill( $where = null, $query = null )
-	{
-		$r = new $this->recordType;
-		$records = $r->findAll( $where, $query );
-	}
-
-
-}
-// Wrap a PDOStatement to iterate through all result rows. Uses a 
-// local cache to allow rewinding.
-class RecordSet implements Iterator
-{
-    public
-        $stmt,
-        $cache,
-        $next;
+	protected $next;
 
     public function __construct( $recordType, $where = null, $order = null )
     {
+        $this->recordType = $recordType;
         $this->cache = array();
-        $this->stmt = $stmt;
     }
 
     public function rewind()
     {
-        reset($this->cache);
+        reset( $this->cache );
         $this->next();
     }
 
@@ -67,16 +55,10 @@ class RecordSet implements Iterator
         // Past the end of the data cache
         if (FALSE === $this->next)
         {
-            // Fetch the next row of data
-            $row = $this->stmt->fetch(PDO::FETCH_ASSOC);
-
-            // Fetch successful
-            if ($row)
-            {
-                // Add row to data cache
-                $this->cache[] = $row;
-            }
+        	$type = $this->recordType;
+        	$this->cache = $type::findAll( $this->where, $this->order );
 
             $this->next = each($this->cache);
         }
     }
+}

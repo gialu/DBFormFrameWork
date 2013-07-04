@@ -27,14 +27,15 @@ class RadioFormElement extends ListFormElement
 			foreach( $this->records as $record )
 			{
 				$description = $this->display;
-				$result .= sprintf( '<dt><label for="%s">%s</label></dt>'
+				$result .= sprintf( '<dt><label for="%1$s_%2$s">%3$s</label></dt>'
 					, $this->name
+					, $record ->getID()
 					, $record ->$description );
 
-				$result .= sprintf( '<dd><input type="radio" name="%1$s" value="%2$s" %3$s /></dd>'
-					,	$this->name
-					,	$record ->getID()
-					,	$record ->getID() === $this->value?'checked="checked"':''
+				$result .= sprintf( '<dd><input type="radio" id="%1$s_%2$s" name="%1$s" value="%2$s" %3$s /></dd>'
+					, $this->name
+					, $record ->getID()
+					, $record ->getID() === $this->value?'checked="checked"':''
 				);
 			}
 			$result .= '</dl>';
