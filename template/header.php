@@ -16,7 +16,7 @@
 	<meta http-equiv="Content-Style-Type" content="text/css; charset=utf-8" />
 	<link rel="stylesheet" href="/template/layout.css" media="all">
 	<script type="text/javascript" src="http://static.localhost/js/jquery/jquery-1.10.2.min.js"></script>
-	<script type="text/javascript" src="http://static.localhost/js/jquery-tablesorter/jquery.tablesorter.js"></script>
+	<script type="text/javascript" src="http://static.localhost/js/jquery-tablesorter/jquery.tablesorter.min.js"></script>
 </head>
 <body>
 <div id='page'>

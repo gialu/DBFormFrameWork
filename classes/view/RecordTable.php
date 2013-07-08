@@ -39,13 +39,22 @@ class RecordTable
 		$rs = $className::findAll();
 		$result = '';
 		$result .= "<table id='{$this->tableName}' class='table-content tablesorter'>\n";
+		/*
+		 * Tabellen Überschriften erzeugen
+		 * Diese sind als 'label' attribute definiert
+		 */
 		$result .= "<thead><tr>\n";
 		foreach( $this->fields as $fieldName => $fieldAttribute )
 		{
 			$label =  $fieldAttribute['label'];
 			$result .= sprintf( "<th>%s</th>\n", $label );
 		}
-		$result .= "</tr>\n</thead>\n<tbody>\n";
+		$result .= "</tr></thead>\n";
+		/*
+		 * Tabellen Inhalt erzeugen
+		 * evtl. Fremdschlüssel auf andere Tabelle auflösen
+		 */
+		$result .= "<tbody>\n";
 		foreach($rs as $id => $record )
 		{
 			$result .= '<tr>';
@@ -68,27 +77,7 @@ class RecordTable
 		}
 		$result .= "</tbody>\n</table>\n";
 		if( $this->sortable ) {
-			$result .= "
-<script>
-	$(function(){
-		\$( \"#{$this->tableName}\" ).tablesorter( {sortReset : true, sortRestart : true} );
-	});
-</script>\n";
-/*
-			$result .= "
-var script = document.createElement('script');
-script.type = 'text/javascript';
-
-script.src = 'http://static.localhost/js/jquery/jquery-1.10.2.min.js';
-document.getElementByTagName('head')[0].appendChild(script);
-
-script.src = 'http://static.localhost/js/jquery-tablesorter/jquery.tablesorter.js';
-document.getElementByTagName('head')[0].appendChild(script);
-script.src = '$( function(){\$(\'{$this->tableName}\').tablesorter(); });';
-do
-cument.getElementByTagName('head')[0].appendChild(script);
-";
-*/
+			$result .= "<script>$( function(){ \$( \"#{$this->tableName}\" ).tablesorter( {sortReset : true, sortRestart : true} );	} );</script>\n";
 		}
 		
 		return $result;
