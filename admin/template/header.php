@@ -28,9 +28,9 @@ if( !$login->isLoggedIn() ) {
   </div>
   <div id="navi">
 	<ul>
-	  <li><a href="admin/">Administration</a></li>
-	  <li><a href="admin/user.php">Benutzer</a></li>
-	  <li><a href='../login/?logout'>Abmelden</a></li>
+	  <li><a href="/admin/">Administration</a></li>
+	  <li><a href="/admin/user.php">Benutzer</a></li>
+	  <li><a href='/login/?logout'>Abmelden</a></li>
 	</ul>
   </div>
   <div id="haupt">

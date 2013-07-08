@@ -51,7 +51,6 @@ $FormOptions = array(
 			'type'=> 'image',
 			'label'=> 'logo',
 			'default' => '',
-			'root' => 'images/',
 			'size' => array('height'=>'50px','width'=>'100px')
 		),
 		'HauptKategorieID'=> array(

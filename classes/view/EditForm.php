@@ -168,7 +168,7 @@ class EditForm
 			$value = static::getParam( $fieldName, $this->record->$fieldName );
 
 			$label = $fieldAttributes['label'];
-			$fieldText = "<dt>$label</dt>\n";
+			$fieldText = "<dt>$label</dt>";
 
 			switch( $fieldAttributes['type'] ) {
 				default:
@@ -178,10 +178,9 @@ class EditForm
 					break;
 
 				case 'image':
-					$path = $fieldAttributes['root'] . '/' . $value;
 					$height = $fieldAttributes['size']['height'];
 					$width = $fieldAttributes['size']['width'];
-					$fieldText .= "<dd><img src='$path' alt='$label' height='$height' width='$width' /></dd>";
+					$fieldText .= "<dd><img src='$value' alt='$label' height='$height' width='$width' /></dd>";
 					break;
 
 				case 'password':
@@ -208,40 +207,38 @@ class EditForm
 	 */
 	public function getHtml()
 	{
-		$result = "<form id='{$this->FormName}_modify' action='' method='{$this->FormType}'>\n";
+		$result = "<form id='{$this->FormName}_modify' action='' method='{$this->FormType}' enctype='multipart/form-data'>\n";
 
 		$result .= '<dl>';
 		foreach( $this->fields as $fieldName => $fieldAttributes ) {
 			$value = static::getParam( $fieldName, $this->record->$fieldName );
 			$label = $fieldAttributes['label'];
 
+			$fieldText = "<dt><label for='$fieldName'>$label</label></dt>";
 			switch( $fieldAttributes['type'] ) {
 				default:
 				case 'textarea':
-					$fieldText = "<dt><label for='$fieldName'>$label</label></dt>\n";
 					$fieldText .= "<dd><textarea id='$fieldName' name='$fieldName' rows='10' cols='40'>$value</textarea></dd>\n";
 					
 					break;
 				case 'text':
-				case 'image':
-					$fieldText = "<dt><label for='$fieldName'>$label</label></dt>\n";
 					$fieldText .= "<dd><input id='$fieldName' type='text' name='$fieldName' value='$value' /></dd>\n";
 					break;
 
+				case 'image':
+					$fieldText .= "<dd><input id='$fieldName' type='file' name='$fieldName' value='$value' /></dd>\n";
+					break;
+
 				case 'password':
-					$fieldText = "<dt><label for='$fieldName'>$label</label></dt>\n";
 					$fieldText .= "<dd><input id='$fieldName' type='password' name='$fieldName' value='$value' /></dd>\n";
 					break;
 
 				case 'select':
-					$fieldText = "<dt><label for='$fieldName'>$label</label></dt>\n";
-
 					$list = new SelectFormElement( $fieldName, $fieldAttributes['recordType'], $fieldAttributes['displayField'], $value );
 					$fieldText .= "<dd>\n" . $list->getHtml( ) . "</dd>\n";
 					break;			
 
 				case 'radio':
-					$fieldText = "<dt><label for='$fieldName'>$label</label></dt>\n";
 					$fieldText .= "<dd><fieldset id='$fieldName'>\n";
 					$fieldText .= "<legend>$label</legend>\n";
 
@@ -314,8 +311,28 @@ class EditForm
 	private function storeParams()
 	{
 		foreach( $this->fields as $fieldName => $fieldAttributes ) {
-			$this->record->$fieldName = $_REQUEST[$fieldName];
+			if( $fieldAttributes['type'] === 'image' ) {
+				$this->record->$fieldName = $this->handleUploadImage( $fieldName, $fieldAttributes['root'] );
+			}
+			else {
+				$this->record->$fieldName = $_REQUEST[$fieldName];
+			}
 		}
 	
+	}
+	private function handleUploadImage( $file, $root )
+	{
+		if (file_exists( '..' . $root . $_FILES[$file]["name"]) )  {
+			$errors[] = $_FILES[$file]["name"] . " already exists. ";
+		}
+		else {
+			move_uploaded_file
+				( $_FILES[$file]["tmp_name"]
+				, '..' . $root . $_FILES[$file]["name"]
+				);
+				
+
+		}
+		return $root . $_FILES[$file]["name"];
 	}
 }

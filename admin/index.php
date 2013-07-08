@@ -11,7 +11,7 @@ require_once 'template/header.php';
  */
 $FormOptions = array(
 	'FormName' => 'Kategorie',
-	'FormType' => 'get',
+	'FormType' => 'post',
 	'ParamIDName'=> 'KategorieID',
 	'RecordClassName'=> '\db\Kategorie',
 	'Fields'=> array(
@@ -31,9 +31,10 @@ $FormOptions = array(
 			'default' => ''
 		),
 		'LogoURL'=> array(
-			'type'=> 'text',
+			'type'=> 'image',
 			'label'=> 'Logo URL',
-			'default' => ''
+			'default' => '',
+			'root' => '/images/logo/',
 		),
 		'HauptKategorieID'=> array(
 			'type'=> 'radio',

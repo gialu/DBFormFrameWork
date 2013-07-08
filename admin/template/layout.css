@@ -74,6 +74,13 @@ fieldset {
 	padding: 5px;
 }
 
+input[type=file] {
+	font: inherit;
+	color:inherit;
+	padding: 5px;
+	border:hsl(100,80%,10%) 1px solid;
+}
+
 input[type=submit] { width:100px; }
 
 
