@@ -13,7 +13,10 @@
 <head>
 	<title><?php echo $title?></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Content-Style-Type" content="text/css; charset=utf-8" />
 	<link rel="stylesheet" href="/template/layout.css" media="all">
+	<script type="text/javascript" src="http://static.localhost/js/jquery/jquery-1.10.2.min.js"></script>
+	<script type="text/javascript" src="http://static.localhost/js/jquery-tablesorter/jquery.tablesorter.js"></script>
 </head>
 <body>
 <div id='page'>

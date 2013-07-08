@@ -34,7 +34,7 @@ p {
 	max-width: 900px;
 	margin: 0px auto;
 	overflow:auto;
-	background:url(wrapper-back.png) repeat-y;
+	background:url(images/wrapper-back.png) repeat-y;
 }
 .content {
 	margin: 0 auto 53px;
@@ -94,9 +94,26 @@ dd {
 	background-color:#FADEC5;
 }
 
-.table-content th {
-	text-align:left;
-	color:hsl(30,80%,90%);
-	background-color:hsl(30,80%,10%);
-	padding:2px;
+.table-content .header,
+.table-content .tablesorter-header {
+	background-image: url(data:image/gif;base64,R0lGODlhFQAJAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAkAAAIXjI+AywnaYnhUMoqt3gZXPmVg94yJVQAAOw==);
+	background-position: center right;
+	background-repeat: no-repeat;
+	background-color: hsl(30,100%,75%);
+	cursor: pointer;
+	padding: 4px 20px 4px 4px;
+}
+
+.table-content thead .headerSortUp,
+.table-content thead .tablesorter-headerSortUp,
+.table-content thead .tablesorter-headerAsc {
+	background-image: url(data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjI8Bya2wnINUMopZAQA7);
+}
+.table-contentt thead .headerSortDown,
+.table-content thead .tablesorter-headerSortDown,
+.table-content thead .tablesorter-headerDesc {
+	background-image: url(data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7);
+}
+.table-content thead .sorter-false {
+	background-image: none;
 }

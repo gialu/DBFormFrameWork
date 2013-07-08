@@ -51,7 +51,7 @@ $FormOptions = array(
 			'type'=> 'image',
 			'label'=> 'logo',
 			'default' => '',
-			'size' => array('height'=>'50px','width'=>'100px')
+			'size' => array( 'height'=>'80px' )
 		),
 		'HauptKategorieID'=> array(
 			'type'=> 'select',
@@ -63,11 +63,13 @@ $FormOptions = array(
 	)
 );
 $view = new \view\EditForm( $FormOptions );
-echo $view->getView();
+//echo $view->getView();
 
 $TableOptions = array(
+	'TableName' => 'kategorie-table',
 	'ParamIDName'=> 'KategorieID',
 	'RecordClassName'=> '\db\Kategorie',
+	'Sortable' => true,
 	'Fields'=> array(
 		'Name'=> array(
 			'type'=> 'text',

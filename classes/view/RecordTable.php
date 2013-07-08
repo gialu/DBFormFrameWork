@@ -9,17 +9,21 @@ namespace view;
 
 class RecordTable
 {
-	protected $paramIDName = null;	
+	protected $tableName = null;
+	protected $paramIDName = null;
 	protected $fields = array();
 	protected $recordClassName = null;
 	protected $Record;
+	protected $sortable = false;
 
 	
 	public function __construct( $description )
 	{
+		$this->tableName = $description['TableName'];
 		$this->paramIDName = $description['ParamIDName'];
 		$this->fields = $description['Fields'];
 		$recordClassName = $description['RecordClassName'];
+		$this->sortable = key_exists('Sortable', $description);
 		
 		$this->Record = new $recordClassName( );
 		
@@ -29,19 +33,19 @@ class RecordTable
 		$this->recordClassName = $recordClassName;
 	}
 	
-	public function getHtml()
+	public function getHtml( )
 	{
 		$className = $this->recordClassName;
 		$rs = $className::findAll();
 		$result = '';
-		$result .= "<table class='table-content'>\n";
-		$result .= '<tr>';
+		$result .= "<table id='{$this->tableName}' class='table-content tablesorter'>\n";
+		$result .= "<thead><tr>\n";
 		foreach( $this->fields as $fieldName => $fieldAttribute )
 		{
 			$label =  $fieldAttribute['label'];
-			$result .= sprintf( '<th>%s</th>', $label );
+			$result .= sprintf( "<th>%s</th>\n", $label );
 		}
-		$result .= '</tr>';
+		$result .= "</tr>\n</thead>\n<tbody>\n";
 		foreach($rs as $id => $record )
 		{
 			$result .= '<tr>';
@@ -49,7 +53,7 @@ class RecordTable
 			{
 				$value = $record->$fieldName;
 				switch( $fieldAttributes['type'] ) {
-					default:
+					default: 
 					case 'text':
 						$result .= sprintf( '<td>%s</td>', $value );
 						break;
@@ -60,9 +64,32 @@ class RecordTable
 						break;
 				}
 			}
-			$result .= '</tr>';
+			$result .= "</tr>\n";
 		}
-		$result .= '</table>';
+		$result .= "</tbody>\n</table>\n";
+		if( $this->sortable ) {
+			$result .= "
+<script>
+	$(function(){
+		\$( \"#{$this->tableName}\" ).tablesorter( {sortReset : true, sortRestart : true} );
+	});
+</script>\n";
+/*
+			$result .= "
+var script = document.createElement('script');
+script.type = 'text/javascript';
+
+script.src = 'http://static.localhost/js/jquery/jquery-1.10.2.min.js';
+document.getElementByTagName('head')[0].appendChild(script);
+
+script.src = 'http://static.localhost/js/jquery-tablesorter/jquery.tablesorter.js';
+document.getElementByTagName('head')[0].appendChild(script);
+script.src = '$( function(){\$(\'{$this->tableName}\').tablesorter(); });';
+do
+cument.getElementByTagName('head')[0].appendChild(script);
+";
+*/
+		}
 		
 		return $result;
 	}
