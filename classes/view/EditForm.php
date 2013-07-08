@@ -179,7 +179,6 @@ class EditForm
 
 				case 'image':
 					$size = '';
-					echo var_dump( $fieldAttributes['size'] );
 					if( key_exists( 'height', $fieldAttributes['size']) )
 						$size .= " height='" . $fieldAttributes['size']['height'] . "'";
 					if( key_exists( 'width', $fieldAttributes['size']) )
