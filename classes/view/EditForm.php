@@ -178,9 +178,13 @@ class EditForm
 					break;
 
 				case 'image':
-					$height = $fieldAttributes['size']['height'];
-					$width = $fieldAttributes['size']['width'];
-					$fieldText .= "<dd><img src='$value' alt='$label' height='$height' width='$width' /></dd>";
+					$size = '';
+					echo var_dump( $fieldAttributes['size'] );
+					if( key_exists( 'height', $fieldAttributes['size']) )
+						$size .= " height='" . $fieldAttributes['size']['height'] . "'";
+					if( key_exists( 'width', $fieldAttributes['size']) )
+						$size .= " width='" . $fieldAttributes['size']['width'] . "'";
+					$fieldText .= "<dd><img src='$value' alt='$label' $size /></dd>\n";
 					break;
 
 				case 'password':
@@ -191,7 +195,7 @@ class EditForm
 				case 'select':
 					$fieldRecord = new $fieldAttributes['recordType'];
 					$fieldRecord->find( $value );
-					$fieldText .= "<dd>{$fieldRecord-> $fieldAttributes['displayField']}</dd>";
+					$fieldText .= "<dd>{$fieldRecord-> $fieldAttributes['displayField']}</dd>\n";
 					break;
 
 			}
