@@ -229,7 +229,9 @@ class EditForm
 					break;
 
 				case 'image':
-					$fieldText .= "<dd><input id='$fieldName' type='file' name='$fieldName' value='$value' /></dd>\n";
+					$fieldText .= "<dd><input id='$fieldName' type='file' name='$fieldName' value='$value' />";
+					$fieldText .= "<p><img src='$value' alt='$label' height='50px' /></p>";
+					$fieldText .= "</dd>\n";
 					break;
 
 				case 'password':
@@ -263,7 +265,13 @@ class EditForm
 		// show positive messages
 		if( $this->messages ) {
 			foreach( $this->messages as $message ) {
-				$result .= '<p>' . $message . '</p>';
+				$result .= '<p class="message">' . $message . '</p>';
+			}
+		}		
+		// show positive messages
+		if( $this->errors ) {
+			foreach( $this->errors as $message ) {
+				$result .= '<p class="error">' . $message . '</p>';
 			}
 		}		
 		$buttonName = $this->getID( )==0 ? 'Speichern' : 'Speichern';
@@ -315,7 +323,9 @@ class EditForm
 	{
 		foreach( $this->fields as $fieldName => $fieldAttributes ) {
 			if( $fieldAttributes['type'] === 'image' ) {
-				$this->record->$fieldName = $this->handleUploadImage( $fieldName, $fieldAttributes['root'] );
+				if( $new_file = $this->handleUploadImage( $fieldName, $fieldAttributes['root'] ) )
+					$this->record->$fieldName = $new_file; 
+					
 			}
 			else {
 				$this->record->$fieldName = $_REQUEST[$fieldName];
@@ -325,15 +335,33 @@ class EditForm
 	}
 	private function handleUploadImage( $file, $root )
 	{
+		if( $_FILES[$file]["size"] === 0) {
+			// no file uploaded, signal to use the existing one
+			return false;
+		}
 		if (file_exists( '..' . $root . $_FILES[$file]["name"]) )  {
-			$errors[] = $_FILES[$file]["name"] . " already exists. ";
+			// use the existing file
 		}
 		else {
-			move_uploaded_file
-				( $_FILES[$file]["tmp_name"]
-				, '..' . $root . $_FILES[$file]["name"]
-				);
-				
+			$allowedExts = array("gif", "jpeg", "jpg", "png");
+			$temp = explode(".", $_FILES[$file]["name"]);
+			$extension = end($temp);
+
+			if( (  ($_FILES[$file]["type"] == "image/gif")
+				|| ($_FILES[$file]["type"] == "image/jpeg")
+				|| ($_FILES[$file]["type"] == "image/jpg")
+				|| ($_FILES[$file]["type"] == "image/pjpeg")
+				|| ($_FILES[$file]["type"] == "image/x-png")
+				|| ($_FILES[$file]["type"] == "image/png"))
+				&& ($_FILES[$file]["size"] < 100*1024)
+				&& in_array($extension, $allowedExts)
+			) {
+
+				move_uploaded_file( $_FILES[$file]["tmp_name"], '..' . $root . $_FILES[$file]["name"] );
+			}
+			else {
+				$this->errors[] = 'Bild Datei würde nicht akzeptiert';
+			} 
 
 		}
 		return $root . $_FILES[$file]["name"];
